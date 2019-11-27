@@ -44,4 +44,24 @@ public class UserController {
                 .body(createdUser);
     }
 
+    @DeleteMapping
+    ResponseEntity<User> deleteUser(@PathVariable("id") String id){
+        User foundUser = service.getUserById(id);
+        if (foundUser == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(service.deleteUser(id));
+        }
+    }
+
+    @DeleteMapping
+    ResponseEntity<User> updateUser(@PathVariable("id") String id, User user){
+        User foundUser = service.getUserById(id);
+        if (foundUser == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(service.updateUser(id, user));
+        }
+    }
+
 }
