@@ -24,22 +24,4 @@ public class Post {
     private List<String> keywords;
     private String imgUrl;
     private boolean isActive = true;
-
-    public Post(){}
-
-    @JsonCreator
-    @java.beans.ConstructorProperties({"id", "dateOfPublish", "heading", "author", "text", "keywords", "imgUrl", "isActive"})
-    public Post(String id, LocalDateTime dateOfPublish, String heading,
-                String author, String text, List<String> keywords,
-                String imgUrl, boolean isActiveÒ) {
-        this.id = id;
-        this.dateOfPublish = dateOfPublish;
-        this.heading = heading;
-        this.author = author;
-        this.text = text;
-        this.keywords = keywords;
-        this.imgUrl = imgUrl;
-        this.isActive = isActive;
-    }
-
 }

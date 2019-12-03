@@ -4,11 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 @Data
 @Document(collection = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     private String id;
     private String firstName;
@@ -17,19 +23,42 @@ public class User {
     private String password;
     private String role;
     private String imgUrl;
+    private boolean isActive = true;
 
     public User(){}
 
-    @JsonCreator
-    @java.beans.ConstructorProperties({"id", "firstName", "lastName", "email", "password", "role", "imgUrl"})
-    public User(String id, String firstName, String lastName, String email, String password, String role, String imgUrl) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.imgUrl = imgUrl;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(AuthorityUtils.commaSeparatedStringToAuthorityList(role));
+        return authorities;
     }
 
+    //We also have to override getPassword but lombok is doing this implicitly (the getter)
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isActive;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isActive;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isActive;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive;
+    }
 }

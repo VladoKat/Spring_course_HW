@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/posts")
 public class PostController {
 
     @Autowired
@@ -55,7 +55,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping
+    @PutMapping
     ResponseEntity<Post> updatePost(@PathVariable("id") String id, Post post){
         Post foundPost = service.getPostById(id);
         if (foundPost == null) {

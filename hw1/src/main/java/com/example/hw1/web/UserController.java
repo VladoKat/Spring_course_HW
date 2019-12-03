@@ -2,7 +2,6 @@ package com.example.hw1.web;
 
 import com.example.hw1.model.User;
 import com.example.hw1.service.UserService;
-import com.mongodb.util.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +53,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping
+    @PutMapping
     ResponseEntity<User> updateUser(@PathVariable("id") String id, User user){
         User foundUser = service.getUserById(id);
         if (foundUser == null) {

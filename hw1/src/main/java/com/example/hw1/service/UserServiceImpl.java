@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository repo;
 
@@ -20,7 +20,12 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User getUserById(String userId) {
-        return repo.findById(userId).get();
+        return repo.findById(userId).orElseThrow(() -> new EntityNotFoundException("UserId not found"));
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return repo.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("Username not found"));
     }
 
     @Override
@@ -30,13 +35,15 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User updateUser(String userId, User user) {
+        User old = repo.findById(userId).orElseThrow(() -> new EntityNotFoundException("UserId not found"));
+        user.setId(userId);
         return repo.save(user);
     }
 
     @Override
 //    @RolesAllowed("ROLE_USER")
     public User deleteUser(String id) {
-        User old = repo.findById(id).orElseThrow( () ->
+        User old = repo.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Article with ID=%s not found.", id)));
         repo.deleteById(id);
         return old;
