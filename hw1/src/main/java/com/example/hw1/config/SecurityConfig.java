@@ -24,29 +24,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(restAuthenticationEntryPoint)
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/**").hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers(HttpMethod.PUT).hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers(HttpMethod.DELETE).hasAnyRole("BLOGGER", "ADMIN")
-                .and()
-                .formLogin()
-                .permitAll()
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
-                .and()
-                .logout()
-                .deleteCookies("JSESSIONID")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .logoutUrl("/logout");
+//        http
+//                .csrf().disable()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(restAuthenticationEntryPoint)
 //                .and()
-//                    .rememberMe();
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.GET, "/api/**").authenticated()
+//                .antMatchers(HttpMethod.POST, "/**").hasAnyRole("BLOGGER", "ADMIN")
+//                .antMatchers(HttpMethod.PUT).hasAnyRole("BLOGGER", "ADMIN")
+//                .antMatchers(HttpMethod.DELETE).hasAnyRole("BLOGGER", "ADMIN")
+//                .and()
+//                .formLogin()
+//                .permitAll()
+//                .successHandler(authenticationSuccessHandler)
+//                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+//                .and()
+//                .logout()
+//                .deleteCookies("JSESSIONID")
+//                .clearAuthentication(true)
+//                .invalidateHttpSession(true)
+//                .logoutUrl("/logout");
+////                .and()
+////                    .rememberMe();
+
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and().httpBasic();
     }
 
     @Bean
